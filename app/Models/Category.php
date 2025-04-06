@@ -6,32 +6,40 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $table = 'category';
+    public $table = 'categories';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
+    public $fillable = [
         'store_id',
         'parent_id',
         'name',
         'description',
-        'slug',
-        'created_by',
+        'slug'
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-        ];
-    }
+    protected $casts = [
+        'id' => 'integer',
+        'store_id' => 'integer',
+        'parent_id' => 'integer',
+        'name' => 'string',
+        'description' => 'string',
+        'slug' => 'string'
+    ];
+
+    public static array $create_rules = [
+        'store_id' => 'required',
+        'parent_id' => 'required',
+        'name' => 'required',
+        'description' => 'required',
+        'slug' => 'required'
+    ];
+
+    public static array $update_rules = [
+        'store_id' => 'required',
+        'parent_id' => 'required',
+        'name' => 'required',
+        'description' => 'required',
+        'slug' => 'required'
+    ];
+
+
 }

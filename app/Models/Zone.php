@@ -6,30 +6,36 @@ use Illuminate\Database\Eloquent\Model;
 
 class Zone extends Model
 {
-    protected $table = 'zone';
+    public $table = 'zone';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
+    public $fillable = [
         'name',
         'description',
         'store_id',
-        'coordinates',
+        'coordinates'
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-        ];
-    }
+    protected $casts = [
+        'id' => 'integer',
+        'name' => 'string',
+        'description' => 'string',
+        'store_id' => 'integer',
+        'coordinates' => 'string'
+    ];
+
+    public static array $create_rules = [
+        'name' => 'required',
+        'description' => 'required',
+        'store_id' => 'required',
+        'coordinates' => 'required'
+    ];
+
+    public static array $update_rules = [
+        'name' => 'required',
+        'description' => 'required',
+        'store_id' => 'required',
+        'coordinates' => 'required'
+    ];
+
+
 }

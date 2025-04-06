@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('state');
             $table->string('country');
             $table->string('zip_code');
+            $table->decimal('store_lat', 10, 8);
+            $table->decimal('store_lng', 11, 8);
             $table->string('phone');
             $table->string('email');
             $table->string('store_currency');

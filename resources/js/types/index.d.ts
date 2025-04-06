@@ -36,7 +36,14 @@ export interface User {
     email: string;
     avatar?: string;
     email_verified_at: string | null;
+    is_active: boolean;
+    role: string;
+    meta: {};
     created_at: string;
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
+}
+
+export interface StatusTypes{
+
 }

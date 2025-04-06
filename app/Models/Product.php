@@ -6,35 +6,56 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $table = 'products';
+    public $table = 'products';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
+    public $fillable = [
         'created_by',
         'store_id',
-        'date',
         'name',
         'description',
-        'modified_date',
-        'parent_product',
+        'parent_id',
         'product_type',
-        'active',
+        'review_count',
+        'avg_review',
+        'is_active'
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-        ];
-    }
+    protected $casts = [
+        'id' => 'integer',
+        'created_by' => 'integer',
+        'store_id' => 'integer',
+        'name' => 'string',
+        'description' => 'string',
+        'parent_id' => 'integer',
+        'product_type' => 'decimal:2',
+        'review_count' => 'string',
+        'avg_review' => 'string',
+        'is_active' => 'string'
+    ];
+
+    public static array $create_rules = [
+        'created_by' => 'required',
+        'store_id' => 'required',
+        'name' => 'required',
+        'description' => 'required',
+        'parent_id' => 'required',
+        'product_type' => 'required',
+        'review_count' => 'required',
+        'avg_review' => 'required',
+        'is_active' => 'nullable'
+    ];
+
+    public static array $update_rules = [
+        'created_by' => 'required',
+        'store_id' => 'required',
+        'name' => 'required',
+        'description' => 'required',
+        'parent_id' => 'required',
+        'product_type' => 'required',
+        'review_count' => 'required',
+        'avg_review' => 'required',
+        'is_active' => 'nullable'
+    ];
+
+
 }

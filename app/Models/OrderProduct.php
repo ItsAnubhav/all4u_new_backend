@@ -6,33 +6,48 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderProduct extends Model
 {
-    protected $table = 'order_product';
+    public $table = 'order_products';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
+    public $fillable = [
         'order_id',
         'product_id',
         'product_name',
         'quantity',
         'unit_price',
         'total_price',
-        'notes',
+        'notes'
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-        ];
-    }
+    protected $casts = [
+        'id' => 'integer',
+        'order_id' => 'integer',
+        'product_id' => 'integer',
+        'product_name' => 'string',
+        'quantity' => 'integer',
+        'unit_price' => 'decimal:2',
+        'total_price' => 'decimal:2',
+        'notes' => 'string'
+    ];
+
+    public static array $create_rules = [
+        'order_id' => 'required',
+        'product_id' => 'required',
+        'product_name' => 'required',
+        'quantity' => 'required',
+        'unit_price' => 'required',
+        'total_price' => 'required',
+        'notes' => 'required'
+    ];
+
+    public static array $update_rules = [
+        'order_id' => 'required',
+        'product_id' => 'required',
+        'product_name' => 'required',
+        'quantity' => 'required',
+        'unit_price' => 'required',
+        'total_price' => 'required',
+        'notes' => 'required'
+    ];
+
+
 }
