@@ -46,14 +46,13 @@ class UserController extends Controller
         $metas = $request->all();
         foreach ($metas as $key => $value) {
             if (in_array($key, config('app_config.user_meta_keys',[]))) {
-                continue;
+                UserMeta::updateOrCreate([
+                    'user_id' => $user->id,
+                    'meta_key' => $key,
+                ], [
+                    'meta_value' => $value,
+                ]);
             }
-            UserMeta::updateOrCreate([
-                'user_id' => $user->id,
-                'meta_key' => $key,
-            ], [
-                'meta_value' => $value,
-            ]);
         }
 
         return redirect()->route('users.index');
@@ -79,6 +78,10 @@ class UserController extends Controller
         $user = User::find($id);
         $user->name = $request->name;
         $user->email = $request->email;
+        if ($request->password) {
+            $user->password = bcrypt($request->password);
+        }
+        $user->is_active = $request->is_active;
         $user->save();
         $metas = $request->all();
 

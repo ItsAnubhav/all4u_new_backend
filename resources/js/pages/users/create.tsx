@@ -31,6 +31,8 @@ const formSchema = z.object({
     email: z.string(),
     phone_no: z.string().optional(),
     is_active: z.boolean().optional(),
+    password: z.string().min(8),
+    confirm_password: z.string().min(8),
 });
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -40,11 +42,9 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function MyForm(
-    { user }: { user: User }
-) {
+export default function MyForm() {
 
-    const [isActive, setIsActive] = useState(user.is_active);
+    const [isActive, setIsActive] = useState(true);
 
     // const toggleStatus = async (newStatus) => {
     //     setIsActive(newStatus);
@@ -78,14 +78,15 @@ export default function MyForm(
     //     },
     // })
 
-    console.log("user", user);
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            "name": user.name,
-            "email": user.email,
-            "phone_no": user.meta['phone_no'] || "",
-            "is_active": user.is_active,
+            "name": "",
+            "email": "",
+            "phone_no": "",
+            "password": "",
+            "confirm_password": "",
+            "is_active": "",
         },
     })
 
@@ -100,7 +101,7 @@ export default function MyForm(
     function onSubmit(values) {
         try {
             console.log(values);
-            router.patch(`/users/${user.id}`, values)
+            router.post(`/users`, values)
             toast(
                 <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
                     <code className="text-white">{JSON.stringify(values, null, 2)}</code>
@@ -166,8 +167,41 @@ export default function MyForm(
                                     <FormControl>
                                         <Input
                                             placeholder="johndoe@example.com"
-                                            disabled
                                             type="email"
+                                            {...field} />
+                                    </FormControl>
+
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Password</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Min 8 characters"
+                                            type="password"
+                                            {...field} />
+                                    </FormControl>
+
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="confirm_password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Confirm Password</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Type your password again"
+                                            type="password"
                                             {...field} />
                                     </FormControl>
 

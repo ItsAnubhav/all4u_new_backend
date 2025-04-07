@@ -17,7 +17,7 @@ import { TasksDialogs } from "./components/user-dialogs";
 import DataTableProvider, { useDataTable } from "@/components/datatables/datatable-context";
 import { DataTableDialogs } from "@/components/datatables/data-table-dialogs";
 import AuthLayout from "@/layouts/auth-layout";
-import {Head} from "@inertiajs/react";
+import {Head, router} from "@inertiajs/react";
 import {PlaceholderPattern} from "@/components/ui/placeholder-pattern";
 import AppLayout from "@/layouts/app-layout";
 
@@ -206,7 +206,7 @@ export function IndexPage(
                         <span>Import</span> <Import />
                     </Button>
                     <Button className='space-x-1'
-                    // onClick={() => setOpen('add')}
+                        onClick={() => router.get(`/users/create`, {}, { preserveState: true })}
                     >
                         <span>Create</span> <CirclePlus />
                     </Button>
