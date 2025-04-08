@@ -10,6 +10,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\UserMeta;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -42,6 +43,9 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->save();
+
+        //assign role to user
+        $user->assignRole(Role::findByName($request->role));
 
         $metas = $request->all();
         foreach ($metas as $key => $value) {

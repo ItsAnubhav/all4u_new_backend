@@ -1,4 +1,3 @@
-"use client"
 import { toast } from "sonner"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -11,6 +10,7 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
+    FormDescription
 } from "@/components/ui/form"
 import {
     Input
@@ -44,39 +44,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function MyForm() {
 
+    const { errors } = usePage().props
+
     const [isActive, setIsActive] = useState(true);
-
-    // const toggleStatus = async (newStatus) => {
-    //     setIsActive(newStatus);
-    //
-    //     // Optional: send to backend
-    //     try {
-    //         const response = await fetch(`/users/${user.id}/status`, {
-    //             method: 'PUT',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'Accept': 'application/json',
-    //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-    //             },
-    //             body: JSON.stringify({ is_active: newStatus }),
-    //         });
-    //
-    //         if (!response.ok) throw new Error("Failed to update status");
-    //     } catch (error) {
-    //         console.error(error);
-    //         // Optionally revert UI state
-    //         setIsActive(!newStatus);
-    //     }
-    // };
-
-    // const form = useForm<z.infer<typeof formSchema>>({
-    //     resolver: zodResolver(formSchema),
-    //     defaultValues: {
-    //         "name": user.name,
-    //         "email": user.email,
-    //         "phone_no": "",
-    //     },
-    // })
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -95,7 +65,7 @@ export default function MyForm() {
         handleSubmit,
         setValue,
         watch,
-        formState: { errors },
+        formState: { err },
     } = form;
 
     function onSubmit(values) {
@@ -117,6 +87,8 @@ export default function MyForm() {
         history.back(); // Navigate back to the previous page
     };
 
+    setValue('is_active', isActive)
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={"Edit User"} />
@@ -126,15 +98,19 @@ export default function MyForm() {
                         <FormField
                             control={form.control}
                             name="name"
-                            render={({ field }) => (
+                            render={({ field, fieldState, formState }) => (
                                 <FormItem>
                                     <FormLabel>Name</FormLabel>
                                     <FormControl>
                                         <Input
                                             placeholder="John"
-                                            type=""
-                                            {...field} />
+                                            type="text"
+                                            {...field}
+                                        />
                                     </FormControl>
+                                    {fieldState.error && (
+                                        <FormDescription>{fieldState.error.message}</FormDescription>
+                                    )}
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -152,7 +128,9 @@ export default function MyForm() {
                                             type="text"
                                             {...field} />
                                     </FormControl>
-
+                                    {errors.phone_no && <FormDescription>
+                                        {errors.phone_no}
+                                    </FormDescription>}
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -170,7 +148,9 @@ export default function MyForm() {
                                             type="email"
                                             {...field} />
                                     </FormControl>
-
+                                    {errors.email && <FormDescription>
+                                        {errors.email}
+                                    </FormDescription>}
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -187,7 +167,9 @@ export default function MyForm() {
                                             type="password"
                                             {...field} />
                                     </FormControl>
-
+                                    {errors.password && <FormDescription>
+                                        {errors.password}
+                                    </FormDescription>}
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -204,7 +186,9 @@ export default function MyForm() {
                                             type="password"
                                             {...field} />
                                     </FormControl>
-
+                                    {errors.confirm_password && <FormDescription className={'text-red-500'}>
+                                        {errors.confirm_password}
+                                    </FormDescription>}
                                     <FormMessage />
                                 </FormItem>
                             )}
